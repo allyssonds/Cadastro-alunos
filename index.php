@@ -27,7 +27,7 @@ require_once("db.php");
 
 <body>
     <h2>Cadastro Alunos</h2>
-    <form method="post" action=<?php echo htmlspecialchars('db.php'); ?>>
+    <form method="post" action=<?php echo htmlspecialchars('index.php'); ?>>
         <input type="hidden" name="id" value="<?php echo $id ?>">
         Nome:
         <input type="text" name="nome" value="<?php echo $nome ?>" />
@@ -58,7 +58,7 @@ require_once("db.php");
                     <td><?php echo $aluno['nome']; ?></td>
                     <td><?php echo $aluno['idade']; ?></td>
                     <td><?php echo $aluno['cpf']; ?></td>
-                    <td><a href="db.php?delete=<?php echo $aluno['id'] ?>">Apagar</a></td>
+                    <td><a href="index.php?delete=<?php echo $aluno['id'] ?>">Apagar</a></td>
                     <td><a href="index.php?edit=<?php echo $aluno['id'] ?>">Editar</a></td>
                 </tr>
             <?php endwhile; ?>

@@ -1,23 +1,13 @@
 <?php
 /* sql usado para criar o banco de dados:
-
     CREATE DATABASE mydb;
-
     CREATE TABLE alunos(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(100),
     idade INT,
     cpf INT
     )
-
 */
-
-$id = "";
-$nome = "";
-$idade = "";
-$cpf = "";
-$update = false;
-
 
 // dados para a conexão
 $severname = "localhost";
@@ -27,9 +17,6 @@ $database = "mydb";
 
 // cria conexão
 $mysqli = new mysqli($severname, $username, $password, $database);
-
-// busca todos os registros
-$result = $mysqli->query("SELECT * FROM alunos");
 
 // Prepared Statements
 $stmt = $mysqli->stmt_init();
@@ -52,8 +39,6 @@ if (isset($_POST["salvar"])) {
     $stmt->bind_param("sii", $nome, $idade, $cpf);
 
     $stmt->execute();
-
-    header("location: index.php");
 }
 
 // recebe o id do aluno e apaga o registro do banco
@@ -65,9 +50,15 @@ if (isset($_GET['delete'])) {
     $stmt->bind_param("i", $id);
 
     $stmt->execute();
-
-    header("location: index.php");
 }
+
+// busca todos os registros
+$result = $mysqli->query("SELECT * FROM alunos");
+$id = "";
+$nome = "";
+$idade = "";
+$cpf = "";
+$update = false;
 
 // Editar registro
 if (isset($_GET["edit"])) {
@@ -82,6 +73,7 @@ if (isset($_GET["edit"])) {
     }
 }
 
+
 // atualiza registro
 if (isset($_POST["update"])) {
 
@@ -94,9 +86,10 @@ if (isset($_POST["update"])) {
     $stmt->bind_param('siii', $nome, $idade, $cpf, $id);
     $stmt->execute();
 
-    header("location: index.php");
+    $result = $mysqli->query("SELECT * FROM alunos");
+    $id = $nome = $idade = $cpf = "";
+    $update = false;
 }
-
 
 // encerra conexão com o banco de dados
 $mysqli->close();
