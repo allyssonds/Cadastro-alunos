@@ -21,17 +21,10 @@ $mysqli = new mysqli($severname, $username, $password, $database);
 // Prepared Statements
 $stmt = $mysqli->stmt_init();
 
-
 // checa a conexão
 if ($mysqli->connect_error) {
     die("Erro ao conectar ao banco: " . $mysqli->connect_error);
 }
-
-// busca lista de alunos
-$alunos = $mysqli->query("SELECT * FROM alunos");
-
-// busca lista de salas
-$salas = $mysqli->query("SELECT * FROM salas");
 
 // recebe os dados e salva na tabela do banco
 if (isset($_POST["salvar"])) {
@@ -45,8 +38,6 @@ if (isset($_POST["salvar"])) {
     $stmt->bind_param("sii", $nome, $idade, $cpf);
 
     $stmt->execute();
-
-    $alunos = $mysqli->query("SELECT * FROM alunos");
 }
 
 // recebe o id do aluno e apaga o registro do banco
@@ -58,8 +49,6 @@ if (isset($_GET['delete'])) {
     $stmt->bind_param("i", $id);
 
     $stmt->execute();
-
-    $alunos = $mysqli->query("SELECT * FROM alunos");
 }
 
 $id = "";
@@ -67,6 +56,8 @@ $nome = "";
 $idade = "";
 $cpf = "";
 $update = false;
+
+
 
 // Editar registro
 if (isset($_GET["edit"])) {
@@ -77,6 +68,7 @@ if (isset($_GET["edit"])) {
     if ($stmt) {
         $stmt->bind_result($id, $nome, $idade, $cpf);
         $stmt->fetch();
+        $stmt->close();
         $update = true;
     }
 }
@@ -93,11 +85,9 @@ if (isset($_POST["update"])) {
     $stmt->bind_param('siii', $nome, $idade, $cpf, $id);
     $stmt->execute();
 
-    $alunos = $mysqli->query("SELECT * FROM alunos");
     $id = $nome = $idade = $cpf = "";
     $update = false;
 }
-
 
 ///////////////////////////////////////////////////
 
@@ -114,19 +104,15 @@ if (isset($_POST["adicionar_sala"])) {
     $stmt->bind_param("ss", $nome_sala, $serie_sala);
 
     $stmt->execute();
-
-    $salas = $mysqli->query("SELECT * FROM salas");
 }
 
 // delete sala
-if(isset($_GET["delete_sala"])){
+if (isset($_GET["delete_sala"])) {
     $id_sala = $_GET["delete_sala"];
 
     $stmt->prepare("DELETE FROM salas WHERE id=?");
-    $stmt->bind_param('i',$id_sala);
+    $stmt->bind_param('i', $id_sala);
     $stmt->execute();
-
-    $salas = $mysqli->query("SELECT * FROM salas");
 }
 
 $id_sala = "";
@@ -135,30 +121,44 @@ $serie_sala = "";
 $update_sala = false;
 
 // update sala
-if(isset($_GET["edit_sala"])){
+if (isset($_GET["edit_sala"])) {
     $id_sala = $_GET["edit_sala"];
     $stmt->prepare("SELECT * FROM salas WHERE id=?");
-    $stmt->bind_param('i',$id_sala);
+    $stmt->bind_param('i', $id_sala);
     $stmt->execute();
-    if($stmt){
-        $stmt->bind_result($id_sala,$nome_sala,$serie_sala);
+    if ($stmt) {
+        $stmt->bind_result($id_sala, $nome_sala, $serie_sala);
         $stmt->fetch();
+        $stmt->close();
         $update_sala = true;
     }
 }
 
-if(isset($_POST["update_sala"])){
+if (isset($_POST["update_sala"])) {
     $id_sala = $_POST["id_sala"];
     $nome_sala = $_POST["nome_sala"];
     $serie_sala = $_POST["serie_sala"];
-    
+
     $stmt->prepare("UPDATE salas SET nome=?, serie=? WHERE id=?");
-    $stmt->bind_param("ssi",$nome_sala,$serie_sala,$id_sala);
+    $stmt->bind_param("ssi", $nome_sala, $serie_sala, $id_sala);
     $stmt->execute();
 
     $id_sala = $nome_sala = $serie_sala = "";
-    $salas = $mysqli->query("SELECT * FROM salas");
     $update_sala = false;
+}
+
+// busca lista de alunos
+$result = $mysqli->query("SELECT * FROM alunos",MYSQLI_USE_RESULT);
+$alunos = array();
+while($aluno = $result->fetch_assoc()){
+    array_push($alunos,$aluno);
+}
+
+// busca lista de salas
+$result = $mysqli->query("SELECT * FROM salas",MYSQLI_USE_RESULT);
+$salas = array();
+while($sala = $result->fetch_assoc()){
+    array_push($salas,$sala);
 }
 
 // encerra conexão com o banco de dados

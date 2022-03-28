@@ -35,6 +35,12 @@ require_once("db.php");
         <input type="number" name="idade" value="<?php echo $idade ?>" />
         CPF:
         <input type="number" name="cpf" value="<?php echo $cpf ?>" />
+        Sala:
+        <select name="sala" id="sala">
+            <?php foreach ($salas as $sala) : ?>
+                <option value="<?php echo $sala['id']?>"><?php echo $sala['nome'] ?></option>
+            <?php endforeach; ?>
+        </select>
         <?php
         if ($update) {
             echo '<input type="submit" value="Atualizar" name="update">';
@@ -51,17 +57,21 @@ require_once("db.php");
                     <th>Nome</th>
                     <th>Idade</th>
                     <th>CPF</rh>
+                    <th>Sala</th>
+                    <th>Turma</th>
                 </tr>
             </thead>
-            <?php while ($aluno = $alunos->fetch_assoc()) : ?>
+            <?php foreach ($alunos as $aluno):?>
                 <tr>
                     <td><?php echo $aluno['nome']; ?></td>
                     <td><?php echo $aluno['idade']; ?></td>
                     <td><?php echo $aluno['cpf']; ?></td>
+                    <td></td>
+                    <td></td>
                     <td><a href="alunos.php?delete=<?php echo $aluno['id'] ?>">Apagar</a></td>
                     <td><a href="alunos.php?edit=<?php echo $aluno['id'] ?>">Editar</a></td>
                 </tr>
-            <?php endwhile; ?>
+            <?php endforeach; ?>
         </table>
     </div>
 
