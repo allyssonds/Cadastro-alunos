@@ -36,9 +36,9 @@ require_once("db.php");
         CPF:
         <input type="number" name="cpf" value="<?php echo $cpf ?>" />
         Sala:
-        <select name="sala" id="sala">
+        <select name="id_sala">
             <?php foreach ($salas as $sala) : ?>
-                <option value="<?php echo $sala['id']?>"><?php echo $sala['nome'] ?></option>
+                <option value="<?php echo $sala['id_sala']?>"><?php echo $sala['nome_sala'] ?></option>
             <?php endforeach; ?>
         </select>
         <?php
@@ -58,7 +58,7 @@ require_once("db.php");
                     <th>Idade</th>
                     <th>CPF</rh>
                     <th>Sala</th>
-                    <th>Turma</th>
+                    <th>Serie</th>
                 </tr>
             </thead>
             <?php foreach ($alunos as $aluno):?>
@@ -66,8 +66,8 @@ require_once("db.php");
                     <td><?php echo $aluno['nome']; ?></td>
                     <td><?php echo $aluno['idade']; ?></td>
                     <td><?php echo $aluno['cpf']; ?></td>
-                    <td></td>
-                    <td></td>
+                    <td><?php echo $aluno['nome_sala']?></td>
+                    <td><?php echo $aluno['serie']?></td>
                     <td><a href="alunos.php?delete=<?php echo $aluno['id'] ?>">Apagar</a></td>
                     <td><a href="alunos.php?edit=<?php echo $aluno['id'] ?>">Editar</a></td>
                 </tr>

@@ -1,14 +1,4 @@
 <?php
-/*
-CREATE TABLE salas(
-id INT AUTO_INCREMENT PRIMARY KEY,
-nome VARCHAR(100),
-serie VARCHAR(100)
-);
-
-ALTER TABLE alunos ADD id_sala INT NOT NULL;
-
-*/
 require_once("db.php");
 ?>
 
@@ -61,10 +51,10 @@ require_once("db.php");
             <?php
             foreach ($salas as $sala) :
             ?><tr>
-                    <td><?php echo $sala['nome']; ?></td>
+                    <td><?php echo $sala['nome_sala']; ?></td>
                     <td><?php echo $sala['serie']; ?></td>
-                    <td><a href="salas.php?delete_sala=<?php echo $sala['id'] ?>">Apagar</a></td>
-                    <td><a href="salas.php?edit_sala=<?php echo $sala['id'] ?>">Editar</a></td>
+                    <td><a href="salas.php?delete_sala=<?php echo $sala['id_sala'] ?>">Apagar</a></td>
+                    <td><a href="salas.php?edit_sala=<?php echo $sala['id_sala'] ?>">Editar</a></td>
                 </tr>
             <?php endforeach; ?>
 

@@ -1,12 +1,24 @@
 <?php
 /* sql usado para criar o banco de dados:
     CREATE DATABASE mydb;
+    
     CREATE TABLE alunos(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100),
-    idade INT,
-    cpf INT
-    )
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        nome VARCHAR(100),
+        idade INT,
+        cpf INT
+    );
+
+    CREATE TABLE salas(
+        id_sala INT AUTO_INCREMENT PRIMARY KEY,
+        nome_sala VARCHAR(100),
+        serie VARCHAR(100)
+    );
+
+    ALTER TABLE alunos ADD id_sala INT NOT NULL;
+
+    ALTER TABLE `alunos` ADD FOREIGN KEY (`id_sala`) REFERENCES `salas`(`id_sala`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
 */
 
 // dados para a conexão
@@ -31,11 +43,12 @@ if (isset($_POST["salvar"])) {
     $nome = $_POST["nome"];
     $idade = $_POST["idade"];
     $cpf = $_POST["cpf"];
+    $id_sala = $_POST['id_sala'];
 
     // prepara a query sql
-    $stmt->prepare("INSERT INTO alunos(nome,idade,cpf) values(?,?,?)");
+    $stmt->prepare("INSERT INTO alunos(nome,idade,cpf,id_sala) values(?,?,?,?)");
 
-    $stmt->bind_param("sii", $nome, $idade, $cpf);
+    $stmt->bind_param("siii", $nome, $idade, $cpf, $id_sala);
 
     $stmt->execute();
 }
@@ -66,7 +79,7 @@ if (isset($_GET["edit"])) {
     $stmt->bind_param('i', $id);
     $stmt->execute();
     if ($stmt) {
-        $stmt->bind_result($id, $nome, $idade, $cpf);
+        $stmt->bind_result($id, $nome, $idade, $cpf, $id_sala);
         $stmt->fetch();
         $stmt->close();
         $update = true;
@@ -80,9 +93,10 @@ if (isset($_POST["update"])) {
     $nome = $_POST["nome"];
     $idade = $_POST["idade"];
     $cpf = $_POST["cpf"];
+    $id_sala = $_POST["id_sala"];
 
-    $stmt->prepare("UPDATE alunos SET nome=?, idade=?, cpf=? WHERE id=?");
-    $stmt->bind_param('siii', $nome, $idade, $cpf, $id);
+    $stmt->prepare("UPDATE alunos SET nome=?, idade=?, cpf=?, id_sala=? WHERE id=?");
+    $stmt->bind_param('siiii', $nome, $idade, $cpf, $id_sala ,$id);
     $stmt->execute();
 
     $id = $nome = $idade = $cpf = "";
@@ -99,7 +113,7 @@ if (isset($_POST["adicionar_sala"])) {
     $serie_sala = $_POST["serie_sala"];
 
     // prepara a query sql
-    $stmt->prepare("INSERT INTO salas(nome,serie) values(?,?)");
+    $stmt->prepare("INSERT INTO salas(nome_sala,serie) values(?,?)");
 
     $stmt->bind_param("ss", $nome_sala, $serie_sala);
 
@@ -110,7 +124,7 @@ if (isset($_POST["adicionar_sala"])) {
 if (isset($_GET["delete_sala"])) {
     $id_sala = $_GET["delete_sala"];
 
-    $stmt->prepare("DELETE FROM salas WHERE id=?");
+    $stmt->prepare("DELETE FROM salas WHERE id_sala=?");
     $stmt->bind_param('i', $id_sala);
     $stmt->execute();
 }
@@ -123,7 +137,7 @@ $update_sala = false;
 // update sala
 if (isset($_GET["edit_sala"])) {
     $id_sala = $_GET["edit_sala"];
-    $stmt->prepare("SELECT * FROM salas WHERE id=?");
+    $stmt->prepare("SELECT * FROM salas WHERE id_sala=?");
     $stmt->bind_param('i', $id_sala);
     $stmt->execute();
     if ($stmt) {
@@ -139,7 +153,7 @@ if (isset($_POST["update_sala"])) {
     $nome_sala = $_POST["nome_sala"];
     $serie_sala = $_POST["serie_sala"];
 
-    $stmt->prepare("UPDATE salas SET nome=?, serie=? WHERE id=?");
+    $stmt->prepare("UPDATE salas SET nome_sala=?, serie=? WHERE id_sala=?");
     $stmt->bind_param("ssi", $nome_sala, $serie_sala, $id_sala);
     $stmt->execute();
 
@@ -148,7 +162,7 @@ if (isset($_POST["update_sala"])) {
 }
 
 // busca lista de alunos
-$result = $mysqli->query("SELECT * FROM alunos",MYSQLI_USE_RESULT);
+$result = $mysqli->query("SELECT * FROM `alunos` INNER JOIN salas on alunos.id_sala = salas.id_sala ",MYSQLI_USE_RESULT);
 $alunos = array();
 while($aluno = $result->fetch_assoc()){
     array_push($alunos,$aluno);
