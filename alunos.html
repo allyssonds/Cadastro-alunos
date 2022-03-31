@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro alunos</title>
+</head>
+
+<body>
+    <h2>Cadastro Alunos</h2>
+    <form method="post" id="formAluno">
+        <input type="hidden" id="id">
+        Nome:
+        <input type="text" id="nome" />
+        Idade:
+        <input type="number" id="idade" />
+        CPF:
+        <input type="number" id="cpf" />
+        <select id="select_sala"></select>
+        <input type="submit" id="botao">
+    </form>
+    <table>
+        <tr>
+            <th>Nome</th>
+            <th>Idade</th>
+            <th>CPF</th>
+            <th>Sala</th>
+            <th>Serie</th>
+        </tr>
+        <tbody class="alunos">
+        </tbody>
+    </table>
+</body>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="scriptAlunos.js"></script>
+
+</html>
