@@ -14,27 +14,29 @@ $('#form_sala').submit(function (event) {
     if (update) {
         $.ajax({
             type: "post",
-            url: "http://localhost/cadastroAlunosAjax/backend/updateSala.php",
+            url: "backend/updateSala.php",
             data: {
                 id_sala: id_sala,
                 nome_sala: nome_sala,
                 serie: serie
+            },
+            complete: function () {
+                listarSalas();
             }
-        }).done(
-            listarSalas()
-        );
+        });
     } else {
         $.ajax({
             type: "post",
-            url: "http://localhost/cadastroAlunosAjax/backend/salvarSala.php",
+            url: "backend/salvarSala.php",
             data: {
                 nome_sala: nome_sala,
                 serie: serie,
             },
             dataType: "json",
-        }).done(
-            listarSalas()
-        );
+            complete: function () {
+                listarSalas();
+            }
+        });
     }
     update = false;
     $('#nome_sala').val('');
@@ -46,7 +48,7 @@ $('#form_sala').submit(function (event) {
 function listarSalas() {
     $('.salas').empty();
     $.ajax({
-        url: "http://localhost/cadastroAlunosAjax/backend/buscarSalas.php",
+        url: "backend/buscarSalas.php",
         dataType: "json",
         success: function (response) {
             for (i = 0; i < response.length; i++) {
@@ -57,26 +59,27 @@ function listarSalas() {
                     '<td><button onClick="editarSala(' + response[i].id_sala + ')">Editar</td></tr>'
                 );
             }
-        }
+        },
     });
 }
 
 function apagarSala(id) {
     $.ajax({
         type: "GET",
-        url: "http://localhost/cadastroAlunosAjax/backend/apagarSala.php",
+        url: "backend/apagarSala.php",
         data: {
             id_sala: id
         },
-    }).done(
-        listarSalas()
-    );
+        complete: function () {
+            listarSalas();
+        }
+    })
 }
 
 function editarSala(id) {
     $.ajax({
         type: "post",
-        url: "http://localhost/cadastroAlunosAjax/backend/buscarSala.php",
+        url: "backend/buscarSala.php",
         data: {
             id_sala: id
         },

@@ -22,7 +22,7 @@ $('#formAluno').submit(function (event) {
     if (update) {
         $.ajax({
             type: "post",
-            url: "http://localhost/cadastroAlunosAjax/backend/updateAluno.php",
+            url: "backend/updateAluno.php",
             data: {
                 nome: nomeAluno,
                 idade: idadeAluno,
@@ -30,14 +30,15 @@ $('#formAluno').submit(function (event) {
                 id: id,
                 id_sala: id_sala
             },
-        }).done(
-            listarAlunos()
-        );
+            complete: function(){
+                listarAlunos()
+            }
+        });
         // adicionar aluno
     } else {
         $.ajax({
             type: "post",
-            url: "http://localhost/cadastroAlunosAjax/backend/salvarAluno.php",
+            url: "backend/salvarAluno.php",
             data: {
                 nome: nomeAluno,
                 idade: idadeAluno,
@@ -45,9 +46,10 @@ $('#formAluno').submit(function (event) {
                 id_sala: id_sala
             },
             dataType: "json",
-        }).done(
-            listarAlunos()
-        );
+            complete: function(){
+                listarAlunos();
+            }
+        })
     }
 
     $('#id').val('');
@@ -61,12 +63,12 @@ $('#formAluno').submit(function (event) {
 // apagar aluno
 function apagarAluno(id) {
     $.ajax({
-        url: "http://localhost/cadastroAlunosAjax/backend/apagarAluno.php",
+        url: "backend/apagarAluno.php",
         type: "GET",
         data: {
             id: id,
         },
-        success: function (response) {
+        complete: function (response) {
             listarAlunos();
         },
         fail: function (response) {
@@ -79,7 +81,7 @@ function apagarAluno(id) {
 function listarAlunos() {
     $('.alunos').empty();
     $.ajax({
-        url: "http://localhost/cadastroAlunosAjax/backend/buscarAlunos.php",
+        url: "backend/buscarAlunos.php",
         success: function (response) {
             response = JSON.parse(response);
             for (i = 0; i < response.length; i++) {
@@ -100,7 +102,7 @@ function listarAlunos() {
 
 function selectSalas() {
     $.ajax({
-        url: "http://localhost/cadastroAlunosAjax/backend/buscarSalas.php",
+        url: "backend/buscarSalas.php",
         dataType: "json",
         success: function (response) {
             $('#select_sala').empty();
@@ -116,7 +118,7 @@ function selectSalas() {
 function editarAluno(id) {
     $.ajax({
         type: 'post',
-        url: "http://localhost/cadastroAlunosAjax/backend/buscarAluno.php",
+        url: "backend/buscarAluno.php",
         data: {
             id: id
         },
