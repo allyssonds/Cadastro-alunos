@@ -22,7 +22,7 @@ $('#formAluno').submit(function (event) {
     if (update) {
         $.ajax({
             type: "post",
-            url: "backend/updateAluno.php",
+            url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/updateAluno",
             data: {
                 nome: nomeAluno,
                 idade: idadeAluno,
@@ -38,7 +38,7 @@ $('#formAluno').submit(function (event) {
     } else {
         $.ajax({
             type: "post",
-            url: "backend/salvarAluno.php",
+            url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/salvarAluno",
             data: {
                 nome: nomeAluno,
                 idade: idadeAluno,
@@ -63,8 +63,8 @@ $('#formAluno').submit(function (event) {
 // apagar aluno
 function apagarAluno(id) {
     $.ajax({
-        url: "backend/apagarAluno.php",
-        type: "GET",
+        url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/apagarAluno",
+        type: "POST",
         data: {
             id: id,
         },
@@ -81,9 +81,8 @@ function apagarAluno(id) {
 function listarAlunos() {
     $('.alunos').empty();
     $.ajax({
-        url: "backend/buscarAlunos.php",
+        url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/buscarAlunos",
         success: function (response) {
-            response = JSON.parse(response);
             for (i = 0; i < response.length; i++) {
                 $('.alunos').append(
                     '<tr><td>' + response[i].nome + '</td>' +
@@ -100,10 +99,10 @@ function listarAlunos() {
     selectSalas();
 }
 
+// buscar lista de salas
 function selectSalas() {
     $.ajax({
-        url: "backend/buscarSalas.php",
-        dataType: "json",
+        url: "/cadastroalunosobjetos/controllers/Controller_sala.php/buscarSalas",
         success: function (response) {
             $('#select_sala').empty();
             for (i = 0; i < response.length; i++) {
@@ -118,7 +117,7 @@ function selectSalas() {
 function editarAluno(id) {
     $.ajax({
         type: 'post',
-        url: "backend/buscarAluno.php",
+        url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/buscarAluno",
         data: {
             id: id
         },
