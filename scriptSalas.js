@@ -14,7 +14,7 @@ $('#form_sala').submit(function (event) {
     if (update) {
         $.ajax({
             type: "post",
-            url: "/cadastroalunosobjetos/controllers/Controller_sala.php/updateSala",
+            url: "/cadastroalunos/controllers/Controller_sala.php/updateSala",
             data: {
                 id_sala: id_sala,
                 nome_sala: nome_sala,
@@ -27,7 +27,7 @@ $('#form_sala').submit(function (event) {
     } else {
         $.ajax({
             type: "post",
-            url: "/cadastroalunosobjetos/controllers/Controller_sala.php/salvarSala",
+            url: "/cadastroalunos/controllers/Controller_sala.php/salvarSala",
             data: {
                 nome_sala: nome_sala,
                 serie: serie,
@@ -48,7 +48,7 @@ $('#form_sala').submit(function (event) {
 function listarSalas() {
     $('.salas').empty();
     $.ajax({
-        url: "/cadastroalunosobjetos/controllers/Controller_sala.php/buscarSalas",
+        url: "/cadastroalunos/controllers/Controller_sala.php/buscarSalas",
         success: function (response) {
             console.log(response);
             for (i = 0; i < response.length; i++) {
@@ -66,7 +66,7 @@ function listarSalas() {
 function apagarSala(id) {
     $.ajax({
         type: "POST",
-        url: "/cadastroalunosobjetos/controllers/Controller_sala.php/apagarSala",
+        url: "/cadastroalunos/controllers/Controller_sala.php/apagarSala",
         data: {
             id_sala: id
         },
@@ -79,7 +79,7 @@ function apagarSala(id) {
 function editarSala(id) {
     $.ajax({
         type: "post",
-        url: "/cadastroalunosobjetos/controllers/Controller_sala.php/buscarSala",
+        url: "/cadastroalunos/controllers/Controller_sala.php/buscarSala",
         data: {
             id_sala: id
         },

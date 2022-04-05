@@ -22,7 +22,7 @@ $('#formAluno').submit(function (event) {
     if (update) {
         $.ajax({
             type: "post",
-            url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/updateAluno",
+            url: "/cadastroalunos/controllers/Controller_aluno.php/updateAluno",
             data: {
                 nome: nomeAluno,
                 idade: idadeAluno,
@@ -38,7 +38,7 @@ $('#formAluno').submit(function (event) {
     } else {
         $.ajax({
             type: "post",
-            url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/salvarAluno",
+            url: "/cadastroalunos/controllers/Controller_aluno.php/salvarAluno",
             data: {
                 nome: nomeAluno,
                 idade: idadeAluno,
@@ -63,7 +63,7 @@ $('#formAluno').submit(function (event) {
 // apagar aluno
 function apagarAluno(id) {
     $.ajax({
-        url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/apagarAluno",
+        url: "/cadastroalunos/controllers/Controller_aluno.php/apagarAluno",
         type: "POST",
         data: {
             id: id,
@@ -81,7 +81,7 @@ function apagarAluno(id) {
 function listarAlunos() {
     $('.alunos').empty();
     $.ajax({
-        url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/buscarAlunos",
+        url: "/cadastroalunos/controllers/Controller_aluno.php/buscarAlunos",
         success: function (response) {
             for (i = 0; i < response.length; i++) {
                 $('.alunos').append(
@@ -102,7 +102,7 @@ function listarAlunos() {
 // buscar lista de salas
 function selectSalas() {
     $.ajax({
-        url: "/cadastroalunosobjetos/controllers/Controller_sala.php/buscarSalas",
+        url: "/cadastroalunos/controllers/Controller_sala.php/buscarSalas",
         success: function (response) {
             $('#select_sala').empty();
             for (i = 0; i < response.length; i++) {
@@ -117,7 +117,7 @@ function selectSalas() {
 function editarAluno(id) {
     $.ajax({
         type: 'post',
-        url: "/cadastroalunosobjetos/controllers/Controller_aluno.php/buscarAluno",
+        url: "/cadastroalunos/controllers/Controller_aluno.php/buscarAluno",
         data: {
             id: id
         },
